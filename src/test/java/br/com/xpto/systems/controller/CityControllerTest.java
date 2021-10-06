@@ -4,7 +4,6 @@ import br.com.xpto.systems.dto.CityDTO;
 import br.com.xpto.systems.entity.City;
 import br.com.xpto.systems.entity.State;
 import br.com.xpto.systems.repository.CityRepository;
-import br.com.xpto.systems.services.CityServices;
 import br.com.xpto.systems.util.FileUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +32,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,16 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CityControllerTest {
 
     @Autowired
-    private CityServices cityServices;
-
-    @Autowired
     private CityRepository cityRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
     private MockMultipartFile mockMultipartFile = null;
-
 
     @Autowired
     @Qualifier(value = "testRestTemplate")
@@ -86,7 +82,6 @@ class CityControllerTest {
         }
     }
 
-
     @Test
     public void saveFileShouldsucceed() {
         this.init();
@@ -107,7 +102,7 @@ class CityControllerTest {
     }
 
     @Test
-    public void returnCityByIbgeIDShouldSucceed() {
+    public void returnCityByIbgeIDShouldSuccess() {
         this.init();
         City cityFound = this.testRestTemplate.getForEntity("/city/{ibgeID}", City.class, 3550308).getBody();
         assertThat(cityFound).isNotNull();
@@ -116,7 +111,15 @@ class CityControllerTest {
     }
 
     @Test
-    public void returnCitesByUF() {
+    public void returnCityByIbgeIDShouldFail() {
+        this.init();
+        ResponseEntity<City> response = this.testRestTemplate.getForEntity("/city/{ibgeID}", City.class, 0);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void returnCitesByUFShouldSuccess() {
         this.init();
         List<CityDTO> cityDTOS = this.testRestTemplate.exchange("/city/find?state=df", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<CityDTO>>() {
@@ -124,6 +127,16 @@ class CityControllerTest {
 
         assertThat(cityDTOS).isNotNull().isNotEmpty();
         assertThat(cityDTOS.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void returnCitesByUFWithOutFilterShouldWFail() {
+        this.init();
+        ResponseEntity<List<CityDTO>> result = this.testRestTemplate.exchange("/city/find?state=", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<CityDTO>>() {
+                });
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -153,9 +166,21 @@ class CityControllerTest {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
 
             ResultActions resultActions = this.mockMvc.perform(multipart("/city/file/filterValue?column=name&filter=Jaru").file(mockMultipartFile)).andExpect(status().isOk());
+
             assertThat(resultActions).isNotNull();
             assertThat(resultActions.andReturn().getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
             assertThat(resultActions.andReturn().getResponse().getContentAsString().contains("Jaru"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void returnValuesByColumnAndFilterShouldFail() {
+        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        try {
+            mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
+            this.mockMvc.perform(multipart("/city/file/filterValue?column=&filter=").file(mockMultipartFile)).andExpect(status().isBadRequest());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -178,6 +203,17 @@ class CityControllerTest {
     }
 
     @Test
+    public void returntotalValuesByColumnShouldFail() {
+        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        try {
+            mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
+            this.mockMvc.perform(multipart("/city/file/totalByColumn?column=").file(mockMultipartFile)).andExpect(status().isBadRequest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void returntotalValuesShouldSucceed() {
         File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
         try {
@@ -188,6 +224,16 @@ class CityControllerTest {
             assertThat(resultActions.andReturn().getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
             Integer total = Integer.parseInt(resultActions.andReturn().getResponse().getContentAsString());
             assertThat(total).isEqualTo(5565);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void returntotalValuesShouldFail() {
+        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        try {
+            this.mockMvc.perform(multipart("/city/file/total").file(new MockMultipartFile("file","file","csv", (byte[]) null))).andExpect(status().isBadRequest());
         } catch (Exception e) {
             e.printStackTrace();
         }

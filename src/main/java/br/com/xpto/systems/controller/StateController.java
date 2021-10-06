@@ -17,14 +17,13 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/state/")
+@RequestMapping("/state")
 public class StateController {
-
 
     @Autowired
     private CityServices cityServices;
 
-    @GetMapping(value = "status")
+    @GetMapping(value = "/status")
     @Operation(description = "get state with more and less cities")
     public ResponseEntity<Object> getStatNameHigherCityAndMinorCity() {
         Map<String, BigInteger> stateWithMoreCities = cityServices.returnStatNameHigherCity();
@@ -41,9 +40,8 @@ public class StateController {
 
     @GetMapping
     @Operation(description = "return total cities by states")
-    public ResponseEntity<Object> returnTotalCitiesByStates() {
-        return new ResponseEntity<>(cityServices.returnTotalCitiesByStates(), HttpStatus.OK);
+    public ResponseEntity<List<StateDTO>> returnTotalCitiesByStates() {
+        List<StateDTO> stateDTOS = cityServices.returnTotalCitiesByStates();
+        return new ResponseEntity<>(stateDTOS, HttpStatus.OK);
     }
-
-
 }

@@ -4,7 +4,6 @@ import br.com.xpto.systems.dto.CityDTO;
 import br.com.xpto.systems.dto.StateDTO;
 import br.com.xpto.systems.entity.City;
 import br.com.xpto.systems.entity.State;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.NotSupportedException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -115,6 +111,13 @@ public class CityServicesTest {
                 .orElse(null);
         Assertions.assertNotNull(stateDTOS);
         Assertions.assertEquals(new BigInteger("246"), goiais.getTotal());
+    }
+
+    @Test
+    public void getHeigherDistanceBeteewnCities(){
+        this.init();
+        List<City> cityList = this.cityServices.getHeigherDistanceBeteewnCities();
+        Assertions.assertNotNull(cityList);
     }
 
     private City getCity() {

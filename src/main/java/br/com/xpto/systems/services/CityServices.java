@@ -10,11 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ public class CityServices {
 
     private final CityRepository cityRepository;
 
-    public void saveFileIntoDB(MultipartFile file) throws   IllegalFormatException {
+    public void saveFileIntoDB(MultipartFile file) throws IllegalFormatException {
 
         List<List<String>> lists = FileUtil.readFile(file);
         List<City> cityList = FileUtil.saveDataIntoListCity(lists);
@@ -52,7 +50,7 @@ public class CityServices {
     }
 
     public City returnCityByIbgeID(Integer ibgeID) {
-        return cityRepository.findByIbgeId(ibgeID).orElseThrow();
+        return cityRepository.findByIbgeId(ibgeID).orElse(null);
     }
 
     public List<CityDTO> returnCitiesByUF(State state) {
@@ -71,5 +69,40 @@ public class CityServices {
 
     public void deleteCity(Integer ibgeID) {
         this.cityRepository.deleteByIbgeId(ibgeID);
+    }
+
+    public List<City> getHeigherDistanceBeteewnCities() {
+        double maior = 0;
+        City origem = new City();
+        City destino = new City();
+        List<City> cityList = this.cityRepository.findAll();
+        for (City city : cityList) {
+            for (int i = 0; i < cityList.size(); i++) {
+                if (city.getIbgeId() != cityList.get(i).getIbgeId()) {
+                    double lon1 = Math.toRadians(city.getLon().doubleValue());
+                    double lon2 = Math.toRadians(cityList.get(i).getLon().doubleValue());
+                    double lat1 = Math.toRadians(city.getLat().doubleValue());
+                    double lat2 = Math.toRadians(cityList.get(i).getLat().doubleValue());
+
+                    double dlon = lon2 - lon1;
+                    double dlat = lat2 - lat1;
+                    double a = Math.pow(Math.sin(dlat / 2), 2)
+                            + Math.cos(lat1) * Math.cos(lat2)
+                            * Math.pow(Math.sin(dlon / 2), 2);
+
+                    double c = 2 * Math.asin(Math.sqrt(a));
+                    double r = 6371;
+
+                    double result = (c * r);
+                    if (result > maior) {
+                        maior = result;
+                        origem = city;
+                        destino = cityList.get(i);
+                    }
+                }
+            }
+        }
+        return Arrays.asList(origem, destino);
+
     }
 }

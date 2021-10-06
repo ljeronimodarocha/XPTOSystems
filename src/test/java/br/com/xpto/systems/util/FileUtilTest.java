@@ -29,7 +29,6 @@ public class FileUtilTest {
             e.printStackTrace();
         }
 
-
         Assertions.assertNotNull(list);
         Assertions.assertNotEquals(0, list.size());
     }
@@ -115,7 +114,5 @@ public class FileUtilTest {
             Assertions.assertEquals(NullPointerException.class, e);
         }
     }
-
-
 }
 
