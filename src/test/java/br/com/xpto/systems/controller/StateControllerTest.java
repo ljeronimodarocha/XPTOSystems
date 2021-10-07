@@ -45,7 +45,7 @@ class StateControllerTest {
     private MockMvc mockMvc;
 
     public void init() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
             this.mockMvc.perform(multipart("/city/file").file(mockMultipartFile)).andExpect(status().isCreated());

@@ -19,7 +19,7 @@ public class FileUtilTest {
 
     @Test
     public void readFile() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         List<List<String>> list = null;
         try {
@@ -28,14 +28,13 @@ public class FileUtilTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Assertions.assertNotNull(list);
         Assertions.assertNotEquals(0, list.size());
     }
 
     @Test
     public void returnDataOrganizedIntoACityEntity() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         List<List<String>> list = null;
         try {
@@ -53,7 +52,7 @@ public class FileUtilTest {
 
     @Test
     public void getColumnFilterValue() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         List<List<String>> list = null;
         try {
@@ -70,7 +69,7 @@ public class FileUtilTest {
 
     @Test
     public void countTotalValueByColumnWiothOutDuplicateValue() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         List<List<String>> list = null;
         try {
@@ -86,7 +85,7 @@ public class FileUtilTest {
 
     @Test
     public void returnTotalData() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         List<List<String>> list = null;
         try {

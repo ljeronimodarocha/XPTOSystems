@@ -73,7 +73,7 @@ class CityControllerTest {
     }
 
     public void init() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
             this.mockMvc.perform(multipart("/city/file").file(mockMultipartFile)).andExpect(status().isCreated());
@@ -161,7 +161,7 @@ class CityControllerTest {
 
     @Test
     public void returnValuesByColumnAndFilterShouldSucceed() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
 
@@ -177,7 +177,7 @@ class CityControllerTest {
 
     @Test
     public void returnValuesByColumnAndFilterShouldFail() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
             this.mockMvc.perform(multipart("/city/file/filterValue?column=&filter=").file(mockMultipartFile)).andExpect(status().isBadRequest());
@@ -188,7 +188,7 @@ class CityControllerTest {
 
     @Test
     public void returntotalValuesByColumnShouldSucceed() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
 
@@ -204,7 +204,7 @@ class CityControllerTest {
 
     @Test
     public void returntotalValuesByColumnShouldFail() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
             this.mockMvc.perform(multipart("/city/file/totalByColumn?column=").file(mockMultipartFile)).andExpect(status().isBadRequest());
@@ -215,7 +215,7 @@ class CityControllerTest {
 
     @Test
     public void returntotalValuesShouldSucceed() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             mockMultipartFile = new MockMultipartFile("file", file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
 
@@ -231,7 +231,7 @@ class CityControllerTest {
 
     @Test
     public void returntotalValuesShouldFail() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         try {
             this.mockMvc.perform(multipart("/city/file/total").file(new MockMultipartFile("file","file","csv", (byte[]) null))).andExpect(status().isBadRequest());
         } catch (Exception e) {

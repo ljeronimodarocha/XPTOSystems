@@ -30,7 +30,7 @@ public class CityServicesTest {
     private CityServices cityServices;
 
     public void init() {
-        File file = new File("D:\\git\\systems\\src\\main\\resources\\fileTest\\Desafio Cidades - Back End.csv");
+        File file = new File("src/test/fileTest/Desafio Cidades - Back End.csv");
         MultipartFile mockMultipartFile = null;
         try {
             mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "csv", Files.readAllBytes(Paths.get(file.getAbsolutePath().toString())));
