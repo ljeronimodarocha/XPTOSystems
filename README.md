@@ -29,4 +29,5 @@ Foi definido que a API terá serviços para atender os seguintes requisitos:
     13 -    Dentre todas as cidades, obter as duas cidades mais distantes uma da outra com base
                     na localização (distância em KM em linha reta);
 
+Arquivo para teste se encontra no seguinte caminho: src/test/fileTest/
 
